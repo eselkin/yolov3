@@ -1,0 +1,19 @@
+Namespace(batch_size=16, cfg='thesis/yolov3/yolov608-tiny-enlarge.cfg', conf_thres=0.001, data_cfg='cfg/steele.data', img_size=416, iou_thres=0.5, nms_thres=0.5, save_json=False, weights='weights/latest.pt')
+Using CUDA device0 _CudaDeviceProperties(name='GeForce RTX 2080 Ti', total_memory=10986MB)
+
+               Class    Images   Targets         P         R       mAP        F1
+                 all        59       894     0.288     0.722     0.501      0.39
+
+          mouse_body        59       176     0.497     0.966     0.809     0.656
+           mouse_ear        59        93    0.0857      0.43     0.175     0.143
+          mouse_nose        59        57    0.0593     0.123    0.0144      0.08
+          mouse_head        59       120     0.183     0.583     0.188     0.278
+          mouse_foot        59       157    0.0641     0.248    0.0637     0.102
+          mouse_tail        59       114     0.103     0.684     0.327     0.179
+     behavior_eating        59        15     0.833         1     0.964     0.909
+   behavior_grooming        59         2     0.111         1     0.625       0.2
+    behavior_hanging        59         7     0.188     0.857     0.641     0.308
+behavior_micromovement        59        54     0.357     0.852     0.634     0.503
+    behavior_rearing        59        30     0.385     0.833     0.653     0.526
+    behavior_resting        59        41     0.444     0.878     0.749      0.59
+    behavior_walking        59        28     0.433     0.929     0.673     0.591

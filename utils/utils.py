@@ -82,6 +82,9 @@ def coco80_to_coco91_class():  # converts 80-index (val2014) to 91-index (paper)
          64, 65, 67, 70, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 84, 85, 86, 87, 88, 89, 90]
     return x
 
+def coco80_to_steele14_class():
+    x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14]
+    return x
 
 def weights_init_normal(m):
     classname = m.__class__.__name__

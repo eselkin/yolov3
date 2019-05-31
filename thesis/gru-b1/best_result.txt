@@ -1,0 +1,32 @@
+Namespace(batch_size=8, cfg='thesis/gru-b1/yolov608-tiny-gru-b1-add-anchors.cfg', conf_thres=0.3, data_cfg='cfg/steele.data', img_size=608, iou_thres=0.5, nms_thres=0.45, save_json=False, weights='thesis/gru-b1/best.pt')
+
+Using cuda _CudaDeviceProperties(name='GeForce RTX 2080 Ti', major=7, minor=5, total_memory=10986MB, multi_processor_count=68)
+
+{'type': 'net', 'batch': '1', 'subdivisions': '1', 'width': '416', 'height': 608, 'channels': '3', 'momentum': '0.9', 'decay': '0.0005', 'angle': '0', 'saturation': '1.5', 'exposure': '1.5', 'hue': '.1', 'learning_rate': '0.001', 'burn_in': '1000', 'max_batches': '500200', 'policy': 'steps', 'steps': '400000,450000', 'scales': '.1,.1', 'cfg': 'thesis/gru-b1/yolov608-tiny-gru-b1-add-anchors.cfg'}
+XXX: 1
+      Image      Total          P          R        mAP
+          8         59      0.271      0.246      0.228      0.095s
+         16         59      0.261      0.229       0.21     0.0953s
+         24         59      0.303      0.283      0.269      0.104s
+         32         59      0.369      0.342      0.322      0.107s
+         40         59      0.379      0.358      0.338     0.0987s
+         48         59       0.41       0.39      0.371      0.114s
+         56         59       0.43       0.41       0.39      0.104s
+         59         59      0.442      0.419        0.4     0.0541s
+      Image      Total          P          R        mAP
+
+mAP Per Class:
+     mouse_body: 0.6205
+      mouse_ear: 0.1398
+     mouse_nose: 0.0000
+     mouse_head: 0.2792
+     mouse_foot: 0.0000
+     mouse_tail: 0.2763
+behavior_drinking: 0.0000
+behavior_eating: 0.9375
+behavior_grooming: 0.5000
+behavior_hanging: 0.5714
+behavior_micromovement: 0.5869
+behavior_rearing: 0.7500
+behavior_resting: 0.9605
+behavior_walking: 0.3447

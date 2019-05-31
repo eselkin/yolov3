@@ -53,7 +53,8 @@ def test(
 
     seen = 0
     model.eval()
-    coco91class = coco80_to_coco91_class()
+    # coco91class = coco80_to_coco91_class()
+    coco91class = coco80_to_steele14_class()
     print(('%20s' + '%10s' * 6) % ('Class', 'Images', 'Targets', 'P', 'R', 'mAP', 'F1'))
     loss, p, r, f1, mp, mr, map, mf1 = 0., 0., 0., 0., 0., 0., 0., 0.
     jdict, stats, ap, ap_class = [], [], [], []

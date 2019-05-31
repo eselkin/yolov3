@@ -3,8 +3,7 @@ import math
 import os
 import random
 import shutil
-from pathlib import Path
-
+from pathlib import Path 
 import cv2
 import numpy as np
 import torch
@@ -15,10 +14,10 @@ from utils.utils import xyxy2xywh
 
 
 class LoadImages:  # for inference
-    def __init__(self, path, img_size=416):
+    def __init__(self, path, img_size=608):
         self.height = img_size
         img_formats = ['.jpg', '.jpeg', '.png', '.tif']
-        vid_formats = ['.mov', '.avi', '.mp4']
+        vid_formats = ['.mov', '.avi', '.mp4', '.m4v', '.mpeg', '.mpg', '.ts']
 
         files = []
         if os.path.isdir(path):
@@ -64,14 +63,14 @@ class LoadImages:  # for inference
                     ret_val, img0 = self.cap.read()
 
             self.frame += 1
-            print('video %g/%g (%g/%g) %s: ' % (self.count + 1, self.nF, self.frame, self.nframes, path), end='')
+            # print('video %g/%g (%g/%g) %s: ' % (self.count + 1, self.nF, self.frame, self.nframes, path), end='')
 
         else:
             # Read image
             self.count += 1
             img0 = cv2.imread(path)  # BGR
             assert img0 is not None, 'File Not Found ' + path
-            print('image %g/%g %s: ' % (self.count, self.nF, path), end='')
+            # print('image %g/%g %s: ' % (self.count, self.nF, path), end='')
 
         # Padded resize
         img, _, _, _ = letterbox(img0, new_shape=self.height)
@@ -91,6 +90,32 @@ class LoadImages:  # for inference
 
     def __len__(self):
         return self.nF  # number of files
+
+class LoadVideo:  # for inference
+    def __init__(self, file_path, img_size=608):
+        self.height = img_size
+        self.video = cv2.VideoCapture(file_path)
+
+    def __iter__(self):
+        self.count = -1
+        return self
+
+    def __next__(self):
+        self.count += 1
+        ret, img0 = self.video.read()
+        assert ret, 'Video error'
+        img_path = 'video_%g.jpeg' % self.count
+        # im0 = cv2.flip(img0, 1) # regular video not flipped
+        img, _, _, _ = letterbox(img0, height=self.height)
+        # Normalize RGB
+        img = img[:, :, ::-1].transpose(2, 0, 1)
+        img = np.ascontiguousarray(img, dtype=np.float32)
+        img /= 255.0
+
+        return img_path, img, img0
+
+    def __len__(self):
+        return 0
 
 
 class LoadWebcam:  # for inference

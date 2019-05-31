@@ -1,0 +1,19 @@
+Namespace(batch_size=16, cfg='thesis/rnn-b1/yolov608-tiny-enlarge.cfg', conf_thres=0.001, data_cfg='cfg/steele.data', img_size=608, iou_thres=0.5, nms_thres=0.5, save_json=False, weights='weights/best.pt')
+Using CUDA device0 _CudaDeviceProperties(name='GeForce GTX 1070', total_memory=8119MB)
+
+               Class    Images   Targets         P         R       mAP        F1
+                 all        59       894     0.332     0.607     0.567     0.395
+
+          mouse_body        59       176    0.0314     0.869     0.858    0.0607
+           mouse_ear        59        93  0.000169    0.0108   2.3e-06  0.000334
+          mouse_nose        59        57         0         0         0         0
+          mouse_head        59       120   0.00364     0.175     0.142   0.00712
+          mouse_foot        59       157         0         0         0         0
+          mouse_tail        59       114     0.214     0.693     0.551     0.326
+     behavior_eating        59        15     0.577         1     0.954     0.732
+   behavior_grooming        59         2     0.667         1         1       0.8
+    behavior_hanging        59         7       0.4     0.857     0.776     0.545
+behavior_micromovement        59        54     0.358     0.796     0.689     0.494
+    behavior_rearing        59        30      0.52     0.867     0.818      0.65
+    behavior_resting        59        41     0.931     0.659     0.638     0.771
+    behavior_walking        59        28     0.614     0.964     0.951      0.75

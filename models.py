@@ -35,6 +35,19 @@ def create_modules(module_defs):
             if module_def['activation'] == 'leaky':
                 modules.add_module('leaky_%d' % i, nn.LeakyReLU(0.1, inplace=True))
 
+        elif module_def['type'] in ['gru', 'rnn', 'lstm']:
+            batch_first = int(module_def["batch_first"]) == 1
+            input_size = int(module_def["input_size"])
+            hidden_size = int(module_def["hidden_size"])
+            num_layers = int(module_def["num_layers"])
+            if module_def["type"] == 'gru':
+                model_value = nn.GRU(input_size, hidden_size, batch_first=batch_first, num_layers=num_layers)
+            elif module_def["type"] == 'rnn':
+                model_value = nn.RNN(input_size, hidden_size, batch_first=batch_first, num_layers=num_layers)
+            else:
+                model_value = nn.LSTM(input_size, hidden_size, batch_first=batch_first, num_layers=num_layers)
+            modules.add_module('%s_%d' % (module_def['type'], i), model_value)
+        
         elif module_def['type'] == 'maxpool':
             kernel_size = int(module_def['size'])
             stride = int(module_def['stride'])
@@ -197,6 +210,15 @@ class Darknet(nn.Module):
             mtype = module_def['type']
             if mtype in ['convolutional', 'upsample', 'maxpool']:
                 x = module(x)
+
+            elif mtype in ['rnn', 'gru', 'lstm']:
+                prior_shape = x.detach().cpu().numpy().shape
+                batch_size = prior_shape[0]
+                last_dim = prior_shape[2]
+                x = x.view(batch_size, prior_shape[1], -1)
+                x = module(x)
+                x = x[0].view(batch_size, prior_shape[1], last_dim, last_dim)            
+
             elif mtype == 'route':
                 layer_i = [int(x) for x in module_def['layers'].split(',')]
                 if len(layer_i) == 1:
@@ -322,6 +344,13 @@ def load_darknet_weights(self, weights, cutoff=-1):
             conv_layer.weight.data.copy_(conv_w)
             ptr += num_w
 
+        elif module_def['type'] in ['rnn', 'gru', 'lstm']:
+            rnn_layer = module[0]
+            num_b = rnn_layer.bias.numel()
+            rnn_b = torch.from_numpy(weights[ptr:ptr + num_b]).view_as(rnn_layer.bias)
+            rnn_layer.bias.data.copy_(rnn_b)
+            ptr += num_b
+    
     return cutoff
 
 
@@ -348,7 +377,9 @@ def save_weights(self, path='model.weights', cutoff=-1):
                     conv_layer.bias.data.cpu().numpy().tofile(f)
                 # Load conv weights
                 conv_layer.weight.data.cpu().numpy().tofile(f)
-
+            elif module_def['type'] in ['rnn', 'gru', 'lstm']:
+                rnn_layer = module[0]
+                rnn_layer.bias.data.cpu().numpy().tofile(fp)
 
 def convert(cfg='cfg/yolov3-spp.cfg', weights='weights/yolov3-spp.weights'):
     # Converts between PyTorch and Darknet format per extension (i.e. *.weights convert to *.pt and vice versa)
